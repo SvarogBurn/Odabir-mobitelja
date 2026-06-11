@@ -17,7 +17,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 OUT = "Seminar_AHP_Odabir_mobitela.docx"
 IMGDIR = "output"
 
-INLINE = re.compile(r'(\*\*.+?\*\*|`[^`]+`)')
+INLINE = re.compile(r'(\*\*.+?\*\*|\*[^*\n]+?\*|`[^`]+`)')
 PNG = re.compile(r'`([^`]+\.png)`')
 
 
@@ -30,6 +30,8 @@ def add_runs(par, text, bold=False):
         tok = m.group(0)
         if tok.startswith('**'):
             r = par.add_run(tok[2:-2]); r.bold = True
+        elif tok.startswith('*'):
+            r = par.add_run(tok[1:-1]); r.italic = True
         else:
             r = par.add_run(tok[1:-1]); r.font.name = 'Consolas'; r.font.size = Pt(9)
         pos = m.end()
@@ -124,6 +126,34 @@ class Builder:
         self.doc.add_paragraph()
 
 
+def title_page(doc):
+    """Naslovna stranica seminara."""
+    def center(text, size=11, bold=False, italic=False, after=6):
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.space_after = Pt(after)
+        r = p.add_run(text)
+        r.bold, r.italic, r.font.size = bold, italic, Pt(size)
+        return p
+
+    center("Sveučilište u Rijeci", 14, bold=True, after=0)
+    center("Fakultet informatike i digitalnih tehnologija", 12, after=2)
+    center("Digitalna transformacija", 11, italic=True, after=0)
+    for _ in range(6):
+        doc.add_paragraph()
+    center("ODABIR OPTIMALNOG PAMETNOG TELEFONA", 22, bold=True, after=0)
+    center("PRIMJENOM AHP METODE", 22, bold=True, after=8)
+    center("Seminarski rad iz višekriterijskog odlučivanja", 12, italic=True)
+    for _ in range(8):
+        doc.add_paragraph()
+    center("Studenti: _______________________________", 12, after=4)
+    center("Mentor: _______________________________", 12)
+    for _ in range(6):
+        doc.add_paragraph()
+    center("Rijeka, lipanj 2026.", 11)
+    doc.add_page_break()
+
+
 def parse(builder, text):
     lines = text.split('\n')
     i, n = 0, len(lines)
@@ -186,14 +216,19 @@ def main():
     # podijeli seminar na (Uvod+Analiza) i (Zakljucak+Literatura)
     idx = seminar.index("# 4. Zaključak")
     head, tail = seminar[:idx], seminar[idx:]
+    # ukloni markdown naslov (naslovna stranica ga vec nosi)
+    head = re.sub(r'^# .*\n', '', head, count=1)
 
     doc = Document()
     # osnovni font
     style = doc.styles['Normal']
     style.font.name = 'Calibri'; style.font.size = Pt(11)
 
+    title_page(doc)       # naslovna stranica
+
     b = Builder(doc)
-    parse(b, head)        # naslov + 1. Uvod + 2. Analiza
+    b.title_used = True   # nema vise markdown naslova; sve sekcije su Heading 1
+    parse(b, head)        # 1. Uvod + 2. Analiza
     # podnaslov sa studentima nakon naslova nije moguc retroaktivno; preskoceno
     parse(b, interp)      # 3. Interpretacija (s grafovima)
     parse(b, tail)        # 4. Zakljucak + 5. Literatura
