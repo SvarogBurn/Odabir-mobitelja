@@ -137,6 +137,14 @@ class Builder:
                 p.add_run().add_break()
             r = p.add_run(ln); r.font.name = 'Consolas'; r.font.size = Pt(8.5)
 
+    def caption(self, text):
+        self.flush()
+        try:
+            p = self.doc.add_paragraph(style='Caption')
+        except KeyError:
+            p = self.doc.add_paragraph()
+        add_runs(p, text)
+
     def table(self, rows):
         self.flush()
         cells = [[c.strip() for c in r.strip().strip('|').split('|')] for r in rows]
@@ -210,6 +218,9 @@ def parse(builder, text):
         # horizontal rule
         if s == '---':
             builder.flush(); i += 1; continue
+        # table caption (Tablica N. ...)
+        if re.match(r'^Tablica \d+\.', s):
+            builder.caption(s); i += 1; continue
         # blockquote (struktura-napomena) -> preskoci
         if s.startswith('>'):
             builder.flush(); i += 1; continue

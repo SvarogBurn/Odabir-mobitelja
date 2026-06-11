@@ -41,6 +41,8 @@ na svim grafovima.
 
 Stalna shema boja alternativa (vrijedi na svim grafovima osim Components):
 
+Tablica 10. Shema boja alternativa i njihove ključne sirove vrijednosti
+
 | Alternativa | Boja | Ključne sirove vrijednosti |
 |---|---|---|
 | Honor 90 | **plava** | 200 MP, 512 GB, 12 GB RAM, 5000 mAh, 572 € |
@@ -54,6 +56,8 @@ Stalna shema boja alternativa (vrijedi na svim grafovima osim Components):
 
 Usporedbom kriterija s obzirom na cilj dobivene su globalne težine (zbroj = 1,0):
 
+Tablica 11. Težine glavnih kriterija s pripadajućim podkriterijima
+
 | Kriterij | Težina | Udio | Podkriteriji (lokalna težina) |
 |---|---:|---:|---|
 | Kvaliteta kamere | 0,357 | 35,7 % | — |
@@ -64,6 +68,8 @@ Usporedbom kriterija s obzirom na cilj dobivene su globalne težine (zbroj = 1,0
 
 Množenjem težina po putu (cilj → kriterij → podkriterij) dobivaju se **globalne
 težine listova**, tj. konačni „utezi" svake mjerljive značajke:
+
+Tablica 12. Globalne težine listnih kriterija
 
 | List | Globalna težina |
 |---|---:|
@@ -86,6 +92,8 @@ Stupanj nekonzistentnosti usporedbi kriterija iznosi **CR = 0,0124**, daleko
 ispod granice 0,10 — Ivanine prosudbe su logički dosljedne.
 
 **Konačni poredak** (sinteza po oba načina koje nudi Expert Choice):
+
+Tablica 13. Konačni poredak alternativa u oba načina sinteze
 
 | Rang | Alternativa | Distributive | Ideal |
 |---:|---|---:|---:|

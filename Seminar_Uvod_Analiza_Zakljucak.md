@@ -93,6 +93,8 @@ Razmatra se **šest alternativa** — aktualnih uređaja iz različitih cjenovni
 funkcionalnih razreda. Sve vrijednosti prikupljene su s navedenih maloprodajnih
 izvora:
 
+Tablica 1. Sumarne vrijednosti kriterija za šest alternativa
+
 | Alternativa | Cijena (EUR) | Kamera (MP) | RAM (GB) | Baterija (mAh) | Ekran (inč) | Težina (g) | Pohrana (GB) | Izvor |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
 | Honor 90 | 571,92 | 200 | 12 | 5000 | 6,7 | 183 | 512 | Amazon.com |
@@ -141,6 +143,8 @@ međusobno prema tome koliko je jedan važniji od drugoga za postizanje cilja**,
 **alternative se uspoređuju prema tome koliko jedna ima prednost nad drugom s
 obzirom na zadani kriterij**. Korištena je Saatyjeva ljestvica:
 
+Tablica 2. Saatyjeva ljestvica za usporedbu elemenata u parovima
+
 | Ocjena | Značenje |
 |---:|---|
 | 1 | jednako važni |
@@ -157,6 +161,8 @@ Polazeći od Ivaninih potreba (kamera je najvažnija, slijede performanse, zatim
 pohrana i cijena, a fizičke su karakteristike najmanje važne), dobivena je
 sljedeća matrica usporedbi u parovima:
 
+Tablica 3. Matrica usporedbi kriterija s obzirom na cilj
+
 | | Cijena | Kamera | Performanse | Fizičke | Pohrana |
 |---|---:|---:|---:|---:|---:|
 | **Cijena** | 1 | 1/2 | 1/2 | 2 | 1 |
@@ -167,6 +173,8 @@ sljedeća matrica usporedbi u parovima:
 
 Izračunom glavnog svojstvenog vektora matrice dobiveni su **težinski
 koeficijenti (lokalni prioriteti) kriterija**:
+
+Tablica 4. Težinski koeficijenti (lokalni prioriteti) kriterija
 
 | Kriterij | Težina |
 |---|---:|
@@ -185,6 +193,8 @@ Budući da je CR < 0,10, usporedbe se smatraju logički dosljednima i prihvatlji
 **Performanse** (RAM nasuprot Bateriji): RAM je za Ivanin multitasking i obradu
 ocijenjen umjereno važnijim od baterije (ocjena 2).
 
+Tablica 5. Matrica usporedbi podkriterija kriterija Performanse
+
 | Performanse | RAM | Baterija |
 |---|---:|---:|
 | **RAM** | 1 | 2 |
@@ -194,6 +204,8 @@ ocijenjen umjereno važnijim od baterije (ocjena 2).
 
 **Fizičke karakteristike** (Ekran nasuprot Težini): veličina ekrana, važna za
 pregled radova, ocijenjena je umjereno do jako važnijom od težine (ocjena 3).
+
+Tablica 6. Matrica usporedbi podkriterija kriterija Fizičke karakteristike
 
 | Fizičke | Ekran | Težina |
 |---|---:|---:|
@@ -218,6 +230,8 @@ ljestvice), pa za njih nema nekonzistentnosti. Unutar svakog kriterija prioritet
 
 Dobivene **lokalne prioritete alternativa po svakom listnom kriteriju**:
 
+Tablica 7. Lokalni prioriteti alternativa po listnim kriterijima (Data mode)
+
 | Alternativa | Cijena | Kamera | RAM | Baterija | Ekran | Težina | Pohrana |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | Honor 90 | 0,1304 | 0,4464 | 0,2000 | 0,1777 | 0,1718 | 0,1740 | 0,3636 |
@@ -239,6 +253,8 @@ najniže razine prema najvišoj, lokalni se prioriteti množe težinama svih čv
 kojima alternativa pripada, a zatim zbrajaju.
 
 **Korak 1 — globalne težine listova** (umnožak težina po putu od cilja do lista):
+
+Tablica 8. Globalne težine listnih kriterija
 
 | List | Izračun | Globalna težina |
 |---|---|---:|
@@ -264,6 +280,8 @@ prioritet alternative na tom listu). Primjerice, za Honor 90:
 oba načina sinteze koje nudi Expert Choice — *Distributive* (normalizacija po
 zbroju) i *Ideal* (normalizacija po najboljoj alternativi, otpornija na pojavu
 obrtanja ranga):
+
+Tablica 9. Konačni poredak alternativa (Distributive i Ideal sinteza)
 
 | Rang | Alternativa | Prioritet (Distributive) | Prioritet (Ideal) |
 |---:|---|---:|---:|
