@@ -30,7 +30,9 @@ Cilj: Optimalni pametni telefon
 - **Alternative** se boduju iz stvarnih vrijednosti (**Data mode**): svaki
   stupac se normalizira po smjeru (benefit / cost). Inherentno konzistentno.
 - **Sinteza**: globalna tezina lista = umnozak tezina po putu; ukupni prioritet
-  alternative = suma (globalna tezina x lokalni prioritet).
+  alternative = suma (globalna tezina x lokalni prioritet). Racunaju se i
+  ispisuju **oba EC moda**: *Distributive* (normalizacija po zbroju) i *Ideal*
+  (normalizacija po najboljoj alternativi, otpornije na rank reversal).
 
 ## Pokretanje
 
@@ -51,8 +53,12 @@ Pet grafova (Expert Choice stil) u `output/`:
 | `1_performance.png` | Performance | prioriteti alternativa po kriterijima + tezine |
 | `2_dynamic_*.png`   | Dynamic     | utjecaj +/-10% tezina, Components (udjeli) |
 | `3_gradient.png`    | Gradient    | poredak kao funkcija tezine svakog kriterija |
-| `4_head_to_head.png`| Head-to-head| usporedba dvije najbolje alternative |
+| `4_head_to_head.png`| Head-to-head| usporedba dvije najbolje alternative po svih 7 listnih kriterija |
 | `5_two_d.png`       | 2D          | alternative u 4 kvadranta po 2 kriterija |
+
+Uz grafove, u konzoli se ispisuje i **crossover analiza** (numericki): tezina
+koju pojedini kriterij mora dosegnuti da prvi pratitelj prestigne pobjednika -
+odgovor na EC Dynamic pitanje "kolika tezina za prestizanje".
 
 ## Datoteke
 

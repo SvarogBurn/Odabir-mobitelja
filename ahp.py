@@ -151,11 +151,20 @@ def compute():
     # 3d. Lokalni prioriteti alternativa po svakom listu (Data mode)
     res["alt_local"] = {leaf: data_priorities(leaf) for leaf in leaf_global}
 
-    # 3e. Ukupni prioriteti alternativa = sum(global_leaf * local_alt)
+    # 3e. Ukupni prioriteti alternativa - DISTRIBUTIVE mod (EC default):
+    #     normalizacija po zbroju (vec napravljeno u alt_local), zatim suma.
     overall = np.zeros(len(ALTERNATIVES))
     for leaf, gw in leaf_global.items():
         overall += gw * res["alt_local"][leaf]
     res["overall"] = overall
+
+    # 3e'. Ukupni prioriteti - IDEAL mod (EC alternativa): svaki list se dijeli
+    #      s najboljom alternativom (max -> 1.0), pa se tezinski zbraja i normira.
+    overall_ideal = np.zeros(len(ALTERNATIVES))
+    for leaf, gw in leaf_global.items():
+        col = res["alt_local"][leaf]
+        overall_ideal += gw * (col / col.max())
+    res["overall_ideal"] = overall_ideal / overall_ideal.sum()
 
     # 3f. Lokalni prioriteti alternativa po GLAVNOM kriteriju (za grafove)
     alt_by_crit = {}
@@ -234,12 +243,24 @@ def print_report(res):
         row = f"{a:<20}" + "".join(f"{res['alt_local'][l][i]:>11.4f}" for l in leaves)
         print(row)
 
-    # --- Ukupni prioriteti i rang ---
-    print("\n[5] UKUPNI PRIORITETI I RANG ALTERNATIVA (s obzirom na cilj)\n")
+    # --- Ukupni prioriteti i rang (DISTRIBUTIVE) ---
+    print("\n[5] UKUPNI PRIORITETI I RANG ALTERNATIVA (s obzirom na cilj)")
+    print("    Sinteza: DISTRIBUTIVE mod (EC default)\n")
     order = np.argsort(-res["overall"])
     for rank, i in enumerate(order, 1):
         bar = "#" * int(round(res["overall"][i] * 100))
         print(f"   {rank}. {res['alternatives'][i]:<20} {res['overall'][i]:.4f}  {bar}")
+
+    # --- Usporedna sinteza IDEAL mod ---
+    print("\n    Sinteza: IDEAL mod (EC alternativa, otpornija na rank reversal)\n")
+    order_i = np.argsort(-res["overall_ideal"])
+    for rank, i in enumerate(order_i, 1):
+        flag = "" if res["alternatives"][i] == res["alternatives"][order[rank - 1]] \
+            else "  <- razlika u poretku"
+        print(f"   {rank}. {res['alternatives'][i]:<20} {res['overall_ideal'][i]:.4f}{flag}")
+    same = list(order) == list(order_i)
+    print(f"\n   Poredak distributive vs ideal: "
+          f"{'ISTI (robustan rezultat)' if same else 'RAZLIKUJE SE'}")
 
     print(f"\n   Ukupna nekonzistentnost modela (EC-stil): {res['overall_inconsistency']:.4f}")
     print(f"   POBJEDNIK: {res['alternatives'][order[0]]}")

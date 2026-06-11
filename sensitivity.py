@@ -110,14 +110,16 @@ def dynamic(res):
     fig, (axL, axR) = plt.subplots(1, 2, figsize=(13, 6))
     crits = res["criteria"]
     yc = np.arange(len(crits))
-    axL.barh(yc, [res["criteria_weights"][c] for c in crits], color="steelblue")
+    cw_vals = [res["criteria_weights"][c] for c in crits]
+    axL.barh(yc, cw_vals, color="steelblue")
     axL.set_yticks(yc)
     axL.set_yticklabels(crits, fontsize=9)
     axL.invert_yaxis()
     axL.set_title("Tezine kriterija (trenutne)")
     axL.set_xlabel("tezina")
+    axL.set_xlim(0, max(cw_vals) * 1.22)  # prostor za oznake vrijednosti
     for i, c in enumerate(crits):
-        axL.text(res["criteria_weights"][c] + 0.005, i,
+        axL.text(res["criteria_weights"][c] + max(cw_vals) * 0.015, i,
                  f"{res['criteria_weights'][c]:.3f}", va="center", fontsize=8)
 
     ya = np.arange(len(ALTERNATIVES))
@@ -128,9 +130,12 @@ def dynamic(res):
     axR.invert_yaxis()
     axR.set_title("Ukupni prioriteti alternativa")
     axR.set_xlabel("prioritet")
+    axR.set_xlim(0, base.max() * 1.18)  # prostor za oznake vrijednosti
     for i, idx in enumerate(base_order):
-        axR.text(base[idx] + 0.003, i, f"{base[idx]:.3f}", va="center", fontsize=8)
+        axR.text(base[idx] + base.max() * 0.012, i, f"{base[idx]:.3f}",
+                 va="center", fontsize=8)
     fig.suptitle("DYNAMIC - trenutno stanje modela", fontsize=13)
+    fig.tight_layout(rect=[0, 0, 1, 0.95])
     _save(fig, "2_dynamic_base.png")
 
     # Scenariji +/-10% za svaki kriterij; detekcija promjene poretka
@@ -223,8 +228,9 @@ def gradient(res):
         for a in ALTERNATIVES:
             ax.plot(ts, curves[a], color=COLOR[a], linewidth=1.8, label=a)
         ax.axvline(cur, color="black", linestyle="--", linewidth=1)
-        ax.text(cur, ax.get_ylim()[1], f" trenutno={cur:.2f}",
-                fontsize=7, va="top", rotation=90)
+        ymin, ymax = ax.get_ylim()
+        ax.text(cur + 0.01, ymin + (ymax - ymin) * 0.5, f"trenutno={cur:.2f}",
+                fontsize=7, va="center", rotation=90, color="black")
         ax.set_title(c, fontsize=10)
         ax.set_xlabel("tezina kriterija")
         ax.set_ylabel("prioritet alternative")
@@ -243,7 +249,44 @@ def gradient(res):
 
 
 # ---------------------------------------------------------------------------
-# 4. HEAD-TO-HEAD
+# 4. CROSSOVER (numericki - EC Dynamic "koja tezina za prestizanje")
+# ---------------------------------------------------------------------------
+def crossover_analysis(res):
+    order = np.argsort(-res["overall"])
+    a1, a2 = order[0], order[1]  # pobjednik, prvi pratitelj
+    crits = res["criteria"]
+    ts = np.linspace(1e-4, 1 - 1e-4, 2000)
+    print(f"\n   CROSSOVER - tezina kriterija pri kojoj '{ALTERNATIVES[a2]}' "
+          f"prestigne pobjednika '{ALTERNATIVES[a1]}':")
+    for c in crits:
+        others = [k for k in crits if k != c]
+        base_rest = sum(res["criteria_weights"][k] for k in others)
+        ds = []
+        for t in ts:
+            w = {c: t}
+            for k in others:
+                w[k] = (1 - t) * res["criteria_weights"][k] / base_rest
+            ov = overall_with_weights(res, w)
+            ds.append(ov[a1] - ov[a2])  # >0 -> pobjednik ispred
+        ds = np.array(ds)
+        sign = np.sign(ds)
+        idx = np.where(np.diff(sign) != 0)[0]
+        cur = res["criteria_weights"][c]
+        if len(idx) == 0:
+            print(f"      * {c:<24} nema prestizanja (pobjednik ostaje ispred; "
+                  f"trenutna tezina={cur:.3f})")
+        else:
+            pts = []
+            for j in idx:  # linearna interpolacija nultocke
+                t0, t1, d0, d1 = ts[j], ts[j + 1], ds[j], ds[j + 1]
+                pts.append(t0 + (t1 - t0) * d0 / (d0 - d1))
+            pts_s = ", ".join(f"{p:.3f}" for p in pts)
+            print(f"      * {c:<24} prestizanje pri tezini = {pts_s} "
+                  f"(trenutna={cur:.3f})")
+
+
+# ---------------------------------------------------------------------------
+# 5. HEAD-TO-HEAD (po svim listnim/pokrivajucim kriterijima - EC stil)
 # ---------------------------------------------------------------------------
 def head_to_head(res):
     if config.HEAD_TO_HEAD:
@@ -253,33 +296,32 @@ def head_to_head(res):
         a1, a2 = ALTERNATIVES[order[0]], ALTERNATIVES[order[1]]
     i1, i2 = ALTERNATIVES.index(a1), ALTERNATIVES.index(a2)
 
-    crits = res["criteria"]
-    # tezinski doprinos razlike po glavnom kriteriju
-    diffs = []
-    for c in crits:
-        gw = res["criteria_weights"][c]
-        d = gw * (res["alt_by_crit"][c][i1] - res["alt_by_crit"][c][i2])
-        diffs.append(d)
+    # po svim LISTNIM kriterijima, sortirano po globalnoj tezini
+    leaves = sorted(res["leaf_global"], key=lambda l: -res["leaf_global"][l])
+    diffs = [res["leaf_global"][l] * (res["alt_local"][l][i1] - res["alt_local"][l][i2])
+             for l in leaves]
 
-    fig, ax = plt.subplots(figsize=(11, 6.5))
-    y = np.arange(len(crits))
+    fig, ax = plt.subplots(figsize=(11, 7))
+    y = np.arange(len(leaves))
     colors = ["seagreen" if d >= 0 else "indianred" for d in diffs]
     ax.barh(y, diffs, color=colors)
     ax.axvline(0, color="black", linewidth=1)
     ax.set_yticks(y)
-    ax.set_yticklabels(crits, fontsize=10)
+    ax.set_yticklabels([f"{l} (gw={res['leaf_global'][l]:.3f})" for l in leaves], fontsize=9)
     ax.invert_yaxis()
-    lim = max(abs(d) for d in diffs) * 1.3 + 1e-6
+    lim = max(abs(d) for d in diffs) * 1.35 + 1e-6
     ax.set_xlim(-lim, lim)
     ax.set_xlabel(f"<--- bolji {a2}        |        bolji {a1} --->")
     tot1, tot2 = res["overall"][i1], res["overall"][i2]
     ax.set_title(f"HEAD-TO-HEAD: {a1} ({tot1:.3f})  vs  {a2} ({tot2:.3f})\n"
-                 f"(tezinski doprinos razlike po kriteriju)", fontsize=12)
+                 f"(tezinski doprinos razlike po listnom kriteriju)", fontsize=12)
     for i, d in enumerate(diffs):
-        ax.text(d + (0.002 if d >= 0 else -0.002), i, f"{d:+.3f}",
+        ax.text(d + lim * 0.02 * (1 if d >= 0 else -1), i, f"{d:+.3f}",
                 va="center", ha="left" if d >= 0 else "right", fontsize=8)
     _save(fig, "4_head_to_head.png")
-    print(f"\n   HEAD-TO-HEAD: {a1} vs {a2}  (ukupno {tot1:.3f} vs {tot2:.3f})")
+    net = sum(diffs)
+    print(f"\n   HEAD-TO-HEAD: {a1} vs {a2}  (ukupno {tot1:.3f} vs {tot2:.3f}, "
+          f"neto razlika {net:+.3f})")
 
 
 # ---------------------------------------------------------------------------
@@ -318,5 +360,6 @@ def run_all(res):
     performance(res)
     dynamic(res)
     gradient(res)
+    crossover_analysis(res)
     head_to_head(res)
     two_d(res)
