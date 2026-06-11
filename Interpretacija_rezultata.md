@@ -1,50 +1,93 @@
 # 3. Interpretacija rezultata
 
-U ovom poglavlju tumače se rezultati primjene AHP metode na problem odabira
-optimalnog pametnog telefona za Ivanu (32), freelance grafičku dizajnericu iz
-Rijeke. Najprije se interpretiraju izračunate težine kriterija i konačni poredak
-alternativa, a zatim se detaljno opisuje svaki od grafova analize osjetljivosti
-te se objašnjava kako su pojedini grafovi međusobno povezani.
+U ovom se poglavlju detaljno tumače rezultati primjene AHP metode na problem
+odabira optimalnog pametnog telefona za Ivanu (32), freelance grafičku
+dizajnericu iz Rijeke. Za svaki se graf najprije objašnjava **što se mjeri i kako
+(osi, mjerne jedinice, način izračuna)**, zatim **koji element grafa predstavlja
+što (boje, oblici, stupci, linije, mreža, legenda)**, te se na kraju daje
+**dubinska interpretacija podataka** s posljedicama za odluku.
 
-Radi lakšeg praćenja, svakoj je alternativi kroz sve grafove dodijeljena ista,
-stalna boja:
+## 3.0. Kako čitati vrijednosti („prioritete") na grafovima
 
-| Alternativa | Boja na grafovima |
-|---|---|
-| Honor 90 | **plava** |
-| iPhone 16 | **zelena** |
-| Samsung Galaxy A56 | **ljubičasta (purpurna)** |
-| Samsung Galaxy A35 | **roza (magenta)** |
-| OnePlus 11 | **žuto-maslinasta** |
-| Google Pixel 8 | **tirkizna (cijan)** |
+Prije tumačenja pojedinih grafova nužno je razumjeti **što brojevi na osima
+zapravo znače**, jer se isti pojam — *prioritet* — pojavljuje na svim grafovima.
+
+- **Prioritet je bezdimenzijski relativni udio**, a ne apsolutna mjera. Ne mjeri
+  se u eurima, megapikselima ni gigabajtima, nego u *udjelu važnosti* na skali
+  od 0 do 1.
+- **Lokalni prioritet alternative po jednom kriteriju** dobiven je „Data mode"
+  postupkom (kako radi Expert Choice): stvarne se vrijednosti iz tablice
+  normaliziraju. Za kriterije gdje je *više bolje* (kamera, RAM, baterija, ekran,
+  pohrana) koristi se izravan udio: prioritet = vrijednost / zbroj svih
+  vrijednosti. Za kriterije gdje je *manje bolje* (cijena, težina) koristi se
+  recipročna vrijednost: prioritet = (1/vrijednost) / zbroj recipročnih
+  vrijednosti. Zbog toga **lokalni prioriteti svih šest alternativa unutar bilo
+  kojeg kriterija uvijek zbrajaju u točno 1,0**.
+- **Težine kriterija** dobivene su drukčije — usporedbom u parovima na Saatyjevoj
+  skali i izračunom glavnog svojstvenog vektora matrice usporedbi. I one zbrajaju
+  u 1,0.
+- **Ukupni prioritet alternative** = zbroj umnožaka (globalna težina kriterija ×
+  lokalni prioritet alternative na tom kriteriju) po svim listovima hijerarhije.
+
+**Ključna metodološka posljedica koju treba imati na umu kroz cijelu
+interpretaciju:** budući da se za kameru i pohranu koristi *omjerna*
+normalizacija, jedna ekstremno visoka vrijednost „pojede" velik dio udjela i
+gurne sve ostale nisko. Honor 90 ima 200 MP, što je oko četiri puta više od
+ostalih (48–50 MP), pa njegov lokalni prioritet po kameri iznosi 0,446, dok svih
+pet uređaja s ~50 MP dobivaju tek po 0,112 (manje od ravnomjernih 1/6 = 0,167).
+Isto vrijedi za pohranu (512 GB naspram 128–256 GB). Ova „dominacija omjerom"
+glavni je pokretač rezultata i objašnjava zašto je Honorova prednost tako velika
+na svim grafovima.
+
+Stalna shema boja alternativa (vrijedi na svim grafovima osim Components):
+
+| Alternativa | Boja | Ključne sirove vrijednosti |
+|---|---|---|
+| Honor 90 | **plava** | 200 MP, 512 GB, 12 GB RAM, 5000 mAh, 572 € |
+| iPhone 16 | **zelena** | 48 MP, 128 GB, 8 GB RAM, 3561 mAh, 689 € |
+| Samsung Galaxy A56 | **ljubičasta** | 50 MP, 128 GB, 8 GB RAM, 5000 mAh, 284 € |
+| Samsung Galaxy A35 | **roza** | 50 MP, 256 GB, 8 GB RAM, 5000 mAh, 314 € |
+| OnePlus 11 | **žuto-maslinasta** | 50 MP, 256 GB, 16 GB RAM, 5000 mAh, 705 € |
+| Google Pixel 8 | **tirkizna** | 50 MP, 128 GB, 8 GB RAM, 4575 mAh, 480 € |
 
 ## 3.1. Težine kriterija i konačni poredak
 
-Usporedbom kriterija s obzirom na cilj dobivene su sljedeće globalne težine:
+Usporedbom kriterija s obzirom na cilj dobivene su globalne težine (zbroj = 1,0):
 
-| Kriterij | Težina |
+| Kriterij | Težina | Udio | Podkriteriji (lokalna težina) |
+|---|---:|---:|---|
+| Kvaliteta kamere | 0,357 | 35,7 % | — |
+| Performanse | 0,226 | 22,6 % | RAM 0,667 · Baterija 0,333 |
+| Pohrana podataka | 0,179 | 17,9 % | — |
+| Cijena | 0,156 | 15,6 % | — |
+| Fizičke karakteristike | 0,082 | 8,2 % | Ekran 0,750 · Težina 0,250 |
+
+Množenjem težina po putu (cilj → kriterij → podkriterij) dobivaju se **globalne
+težine listova**, tj. konačni „utezi" svake mjerljive značajke:
+
+| List | Globalna težina |
 |---|---:|
 | Kvaliteta kamere | 0,357 |
-| Performanse | 0,226 |
 | Pohrana podataka | 0,179 |
 | Cijena | 0,156 |
-| Fizičke karakteristike | 0,082 |
+| RAM | 0,151 |
+| Baterija | 0,075 |
+| Ekran | 0,061 |
+| Težina | 0,020 |
 
-Najvažniji kriterij za Ivanu je **kvaliteta kamere** (35,7 % ukupne važnosti), što
-je u skladu s njezinom potrebom za profesionalnom fotografijom radova. Slijede
-**performanse** (22,6 %), pri čemu je unutar tog kriterija RAM (težina 0,667)
-dvostruko važniji od baterije (0,333). **Pohrana** (17,9 %) i **cijena** (15,6 %)
-imaju srednju važnost, dok su **fizičke karakteristike** (8,2 %) najmanje važne;
-unutar njih ekran (0,75) znatno nadmašuje težinu (0,25).
+Najvažniji kriterij je **kvaliteta kamere** (35,7 %), u skladu s Ivaninom
+potrebom za profesionalnom fotografijom radova. Slijede **performanse** (22,6 %),
+unutar kojih je RAM (multitasking u dizajnerskim aplikacijama) dvostruko važniji
+od baterije. **Pohrana** (17,9 %) i **cijena** (15,6 %) srednje su važne, a
+**fizičke karakteristike** najmanje (8,2 %); zanimljivo je da težina uređaja na
+kraju nosi samo 2 % ukupne odluke, pa je praktički zanemariva.
 
-Stupanj nekonzistentnosti usporedbi kriterija iznosi **CR = 0,0124**, što je
-znatno ispod granične vrijednosti 0,10. To znači da su Ivanine prosudbe logički
-dosljedne i da se dobivenim težinama može vjerovati.
+Stupanj nekonzistentnosti usporedbi kriterija iznosi **CR = 0,0124**, daleko
+ispod granice 0,10 — Ivanine prosudbe su logički dosljedne.
 
-Sintezom lokalnih prioriteta i globalnih težina dobiven je konačni poredak
-alternativa s obzirom na glavni cilj:
+**Konačni poredak** (sinteza po oba načina koje nudi Expert Choice):
 
-| Rang | Alternativa | Prioritet (Distributive) | Prioritet (Ideal) |
+| Rang | Alternativa | Distributive | Ideal |
 |---:|---|---:|---:|
 | 1. | **Honor 90** | **0,3025** | **0,2640** |
 | 2. | Samsung Galaxy A35 | 0,1565 | 0,1639 |
@@ -53,223 +96,289 @@ alternativa s obzirom na glavni cilj:
 | 5. | Google Pixel 8 | 0,1260 | 0,1335 |
 | 6. | iPhone 16 | 0,1145 | 0,1197 |
 
-**Honor 90 je uvjerljivi pobjednik** s prioritetom 0,3025, što je gotovo
-dvostruko više od drugoplasiranog. Poredak je identičan u oba načina sinteze
-(Distributive i Ideal), što je prvi pokazatelj robusnosti rješenja. Drugo i treće
-mjesto dijele Samsung Galaxy A35 (0,1565) i OnePlus 11 (0,1562) — razlika među
-njima je tek 0,0003, pa se može reći da su praktički izjednačeni. iPhone 16 je
-posljednji (0,1145), prvenstveno zbog niske rezolucije kamere (48 MP), male
-pohrane (128 GB) i najviše cijene u kombinaciji s prosječnim ostalim
-značajkama.
+Honor 90 pobjeđuje s 0,3025 — gotovo dvostruko više od drugoplasiranog i 19,3
+postotnih bodova ispred zadnjeg. Drugo i treće mjesto (A35: 0,1565; OnePlus:
+0,1562) razlikuju se za samo 0,0003, dakle praktički su izjednačeni. Poredak je
+**identičan u oba načina sinteze**, što je prvi i najjači znak robusnosti.
 
-## 3.2. Performance (datoteka `1_performance.png`)
+---
 
-Performance graf prikazuje prioritete svih alternativa po pojedinom kriteriju i
-povezuje ih s težinama kriterija.
+## 3.2. PERFORMANCE — `1_performance.png`
 
-**Što graf prikazuje:** Na vodoravnoj osi (x) nalazi se pet glavnih kriterija
-poredanih slijeva nadesno: Cijena, Kvaliteta kamere, Performanse, Fizičke
-karakteristike i Pohrana podataka. Lijeva okomita os („Lokalni prioritet
-alternative") odnosi se na obojene linije, a desna okomita os („Težina
-kriterija", ispisana plavom bojom) odnosi se na svijetloplave stupce u pozadini.
+### Što se mjeri i kako
+Graf istovremeno prikazuje **dvije veličine na dvije različite okomite osi**:
+- **Lijeva os („Lokalni prioritet alternative", raspon 0,0–0,5)** mjeri koliko
+  je svaka alternativa dobra *unutar* pojedinog kriterija. Vrijednosti su
+  normalizirani udjeli koji unutar svakog kriterija zbrajaju u 1,0.
+- **Desna os („Težina kriterija", raspon 0,0–0,5, ispisana plavo)** mjeri
+  važnost samog kriterija u ukupnoj odluci.
+- **Vodoravna os** nosi pet glavnih kriterija (Cijena, Kvaliteta kamere,
+  Performanse, Fizičke karakteristike, Pohrana podataka).
 
-**Svijetloplavi stupci** u dnu grafa predstavljaju težine kriterija: najviši je
-stupac iznad „Kvaliteta kamere" (0,357), zatim slijede Pohrana (0,179),
-Performanse (0,226 — vizualno drugi po visini), Cijena (0,156), a najniži je
-stupac iznad „Fizičke karakteristike" (0,082). Ti stupci govore koliko pojedini
-kriterij „vuče" u konačnoj odluci.
+Za kriterije s podkriterijima (Performanse, Fizičke) prioritet alternative
+izračunat je kao težinski prosjek podkriterija — npr. Performanse = 0,667·RAM +
+0,333·Baterija.
 
-**Šest obojenih linija** s kružnim markerima (točkama) prati svaku alternativu
-kroz svih pet kriterija:
+### Elementi grafa
+- **Pet svijetloplavih (blijedih) stupaca** u pozadini = težine kriterija,
+  očitavaju se na desnoj osi. Najviši je iznad „Kvaliteta kamere" (0,357),
+  slijede „Performanse" (0,226) i „Pohrana" (0,179), pa „Cijena" (0,156), a
+  najniži je iznad „Fizičke karakteristike" (0,082).
+- **Šest obojenih linija s kružnim markerima** = po jedna alternativa; marker
+  pokazuje točnu vrijednost na svakom kriteriju, linija samo spaja te točke radi
+  preglednosti (nagib linije nema vlastito značenje).
+- **Vodoravne crtkane sive linije** = pomoćna mreža za očitavanje vrijednosti na
+  lijevoj osi (svakih 0,1).
+- **Legenda** ispod grafa povezuje boje s alternativama i objašnjava da blijedi
+  stupci predstavljaju težinu kriterija.
 
-- **Plava linija (Honor 90)** ima izrazit vrh iznad „Kvaliteta kamere" (0,446) —
-  daleko iznad svih ostalih — te drugi vrh iznad „Pohrana podataka" (0,364).
-  Istovremeno pada nisko kod „Cijena" (0,130), jer je Honor relativno skup.
-- **Žuto-maslinasta linija (OnePlus 11)** skače na drugi najviši vrh iznad
-  „Performanse" (0,237), zahvaljujući 16 GB RAM-a; inače se drži nisko.
-- **Ljubičasta (A56) i roza (A35) linija** najviše su iznad „Cijena" (0,263 i
-  0,238) jer su to najjeftiniji uređaji, a drže se nisko na ostalim kriterijima.
-- **Tirkizna (Pixel 8) i zelena (iPhone 16) linija** uglavnom su pri dnu, bez
-  istaknutih vrhova; iPhone je najniži kod kamere i pohrane.
+### Dubinska interpretacija
+- **Plava linija (Honor 90)** crta dva oštra vrha: iznad kamere **0,446** (gotovo
+  dvostruko više od idućeg najboljeg ikad na bilo kojem kriteriju) i iznad
+  pohrane **0,364**. Oba vrha leže iznad srednje do visoko teških stupaca, što
+  znači da se Honorova prednost *množi velikim težinama* i prelijeva u konačni
+  rezultat. Istodobno Honor pada na **0,130** kod cijene (skuplji uređaj) — ali
+  taj „gubitak" stoji iznad relativno niskog stupca (0,156), pa malo šteti.
+- **Žuto-maslinasta linija (OnePlus 11)** ima jedini drugi izraziti vrh — iznad
+  performansi **0,237** (16 GB RAM-a). No taj vrh stoji iznad stupca težine 0,226
+  i nije dovoljan da nadoknadi zaostatak na kameri i pohrani.
+- **Ljubičasta (A56) i roza (A35) linija** kreću visoko iznad cijene (0,263 i
+  0,238 — najjeftiniji uređaji) pa naglo padaju na ~0,112 kod kamere i ostaju
+  nisko. Njihova jedina prednost (niska cijena) leži iznad niskog stupca, pa se
+  „gubi".
+- **Tirkizna (Pixel 8) i zelena (iPhone 16) linija** uglavnom su pri dnu bez
+  vrhova; iPhone je apsolutno najniži kod kamere (0,107, jer ima najmanje MP) i
+  kod pohrane (0,091).
+- **Glavni uvid:** pobjednika određuje poklapanje *visoke linije* s *visokim
+  stupcem*. Samo Honor ima svoj najviši vrh točno iznad najvišeg stupca (kamera),
+  što je sažeta vizualna „formula" njegove pobjede. Svi mjesta gdje se sve linije
+  stišću zajedno (npr. fizičke karakteristike, gdje su svi oko 0,16–0,17)
+  pokazuju kriterije koji *ne razlikuju* alternative i stoga ne utječu na odluku.
 
-**Povezanost s konačnim rezultatom:** ključno je gdje se visoka linija poklapa s
-visokim stupcem. Honor 90 ima najviši vrh (kamera) točno iznad najvišeg stupca
-(kamera je najteži kriterij), pa taj uspjeh ulazi u konačni rezultat s najvećom
-težinom — to je glavni razlog njegove pobjede. Nasuprot tome, OnePlusov vrh kod
-performansi nalazi se iznad srednje visokog stupca, pa donosi manju korist, dok
-prednost Samsunga kod cijene leži iznad relativno niskog stupca i stoga slabo
-utječe na konačni poredak.
+---
 
-## 3.3. Dynamic (datoteke `2_dynamic_base.png`, `2_dynamic_scenarios.png`, `2_dynamic_components.png`)
+## 3.3. DYNAMIC — `2_dynamic_base.png`, `2_dynamic_scenarios.png`, `2_dynamic_components.png`
 
-Dynamic analiza pokazuje koliko su prioriteti alternativa osjetljivi na promjene
-težina kriterija. Prikazana je kroz tri grafa.
+Dynamic analiza ispituje koliko je rješenje osjetljivo na promjene težina
+kriterija i od čega se sastoji. Prikazana je s tri grafa.
 
 ### 3.3.1. Trenutno stanje — `2_dynamic_base.png`
 
-Graf je podijeljen u dva panela. **Lijevi panel** („Težine kriterija (trenutne)")
-sadrži vodoravne plave stupce za svih pet kriterija, uz ispisanu brojčanu
-vrijednost na kraju svakog stupca: Kvaliteta kamere 0,357 (najduži), Performanse
-0,226, Pohrana 0,179, Cijena 0,156 i Fizičke karakteristike 0,082 (najkraći).
-**Desni panel** („Ukupni prioriteti alternativa") sadrži vodoravne stupce
-obojene bojom svake alternative, poredane od najboljeg (gore) prema najlošijem
-(dolje): plavi Honor 90 (0,302) izrazito strši udesno, zatim roza Samsung A35
-(0,156) i žuti OnePlus 11 (0,156) gotovo jednake duljine, ljubičasti Samsung A56
-(0,144), tirkizni Google Pixel 8 (0,126) i zeleni iPhone 16 (0,114). Ovaj graf
-sažima polazno („baseline") stanje na koje se nadovezuju scenariji.
+**Što se mjeri:** lijevi panel mjeri težine kriterija, desni ukupne prioritete
+alternativa; oba u istoj bezdimenzijskoj skali udjela (0–1).
+
+**Elementi:**
+- **Lijevi panel („Težine kriterija (trenutne)")** — pet vodoravnih *plavih*
+  (steelblue) stupaca, jednake boje jer prikazuju istu veličinu (težinu). Uz
+  svaki je ispisana vrijednost: Kvaliteta kamere 0,357 (najduži), Performanse
+  0,226, Pohrana 0,179, Cijena 0,156, Fizičke 0,082 (najkraći). Vodoravna os je
+  „tezina".
+- **Desni panel („Ukupni prioriteti alternativa")** — šest vodoravnih stupaca, ovaj
+  put *obojenih bojom svake alternative*, **poredanih od najboljeg (gore) prema
+  najlošijem (dolje)**: plavi Honor 90 (0,302) izrazito strši, pa roza A35
+  (0,156) i žuti OnePlus 11 (0,156) jednake duljine, ljubičasti A56 (0,144),
+  tirkizni Pixel 8 (0,126), zeleni iPhone 16 (0,114).
+
+**Interpretacija:** ovo je polazno („baseline") stanje. Dramatična razlika u
+duljini između Honorovog stupca i ostalih vizualno potvrđuje da pobjeda nije
+tijesna. Skupina od četiri uređaja u sredini (0,11–0,16) toliko je zbijena da
+male promjene ulaza mogu lako mijenjati njihov međusobni redoslijed — što je
+upravo predmet sljedećeg grafa.
 
 ### 3.3.2. Scenariji ±10 % — `2_dynamic_scenarios.png`
 
-Graf prikazuje grupirane okomite stupce: za svaku od šest alternativa (na
-vodoravnoj osi) prikazane su tri stupca čije značenje objašnjava legenda u
-gornjem desnom kutu — **sivi stupac** je Baseline (polazno stanje), **plavi**
-prikazuje stanje kad se težina kriterija Cijena smanji za 10 %, a **narančasti**
-kad se težina kriterija Performanse poveća za 10 %. Okomita os je „Ukupni
-prioritet".
+**Što se mjeri:** kako se ukupni prioriteti (okomita os „Ukupni prioritet")
+mijenjaju kad jednom kriteriju namjerno povećamo ili smanjimo težinu za 10 %, uz
+proporcionalnu preraspodjelu ostalih težina (da zbroj ostane 1,0).
 
-Vidljivo je da su sve tri varijante za svaku alternativu gotovo jednake visine —
-promjene su minimalne. Honor 90 ostaje daleko najviši u sva tri scenarija (oko
-0,30). Jedina zamjetna posljedica je da kod ova dva scenarija OnePlus 11 (0,158)
-neznatno prestiže Samsung A35 (0,156) i preuzima drugo mjesto, dok ostatak
-poretka ostaje nepromijenjen. To potvrđuje da je rješenje vrlo stabilno: ni
-pomak od 10 % u težinama ne mijenja pobjednika ni opću sliku.
+**Elementi:**
+- Za svaku od šest alternativa (vodoravna os) prikazane su **tri okomite stupca**
+  čije značenje daje **legenda u gornjem desnom kutu**: **sivi** = Baseline
+  (polazno), **plavi** = scenarij „Cijena −10 %", **narančasti** = scenarij
+  „Performanse +10 %". (Ova dva scenarija program je sam izdvojio kao
+  najzanimljivija jer jedina izazivaju promjenu poretka.)
+- Vodoravne crtkane linije su pomoćna mreža.
+
+**Interpretacija:** za svaku alternativu sve tri stupca gotovo su jednake visine
+— promjene su sitne (reda 0,001–0,005). Honor ostaje nadmoćno najviši u sva tri
+slučaja (~0,30). Jedina posljedica: u oba scenarija OnePlus 11 (0,158) za dlaku
+prestigne Samsung A35 (0,156) i preuzme **drugo mjesto**, dok ostatak poretka
+ostaje netaknut. Zaključak: model je vrlo otporan — pomak težina od 10 % ne dira
+ni pobjednika ni opću strukturu, nego samo „prebacuje" dva ionako izjednačena
+kandidata za drugo mjesto.
 
 ### 3.3.3. Components — `2_dynamic_components.png`
 
-Components graf prikazuje od čega se sastoji ukupni prioritet svake alternative.
-Riječ je o naslaganim (stacked) okomitim stupcima — jedan stupac po alternativi —
-gdje je svaki stupac podijeljen u **pet obojenih segmenata**, po jedan za svaki
-kriterij. **Važna napomena:** boje segmenata ovdje označavaju **kriterije**, a ne
-alternative (kako pokazuje legenda u gornjem desnom kutu): tirkizna = Cijena,
-crveno-narančasta (losos) = Kvaliteta kamere, zelena (limeta) = Performanse,
-ljubičasta = Fizičke karakteristike, žuta = Pohrana podataka. Visina pojedinog
-segmenta jednaka je doprinosu tog kriterija ukupnom prioritetu alternative, a
-ukupna visina stupca jednaka je ukupnom prioritetu.
+**Što se mjeri:** od kojih se „sastojaka" sastoji ukupni prioritet svake
+alternative, tj. koliko svaki *kriterij* doprinosi konačnom rezultatu te
+alternative. Okomita os je „Ukupni prioritet (po komponentama)".
 
-Stupac Honora 90 daleko je najviši (0,302). U njemu dominira velik
-crveno-narančasti segment (kamera, ≈ 0,16) i istaknut žuti segment (pohrana,
-≈ 0,065), dok su ostali segmenti manji. Kod ostalih alternativa stupci su niži i
-ujednačeniji — npr. kod OnePlusa je zeleni segment (performanse) razmjerno velik,
-a kod oba Samsunga je tirkizni segment (cijena) najveći među njima. Ovaj graf
-zorno objašnjava *zašto* Honor pobjeđuje: gotovo cijela njegova prednost dolazi
-iz kamere i pohrane, dvaju kriterija na kojima ima najveće vrijednosti (200 MP i
-512 GB).
+**Elementi — pozor na boje:**
+- Riječ je o **naslaganim (stacked) okomitim stupcima**, jedan po alternativi.
+- **Boje segmenata ovdje označavaju KRITERIJE, a NE alternative** (drukčija
+  paleta nego na ostalim grafovima!). Prema legendi u gornjem desnom kutu:
+  **tirkizna = Cijena**, **crveno-narančasta (losos) = Kvaliteta kamere**,
+  **zeleno-limeta = Performanse**, **ljubičasta = Fizičke karakteristike**,
+  **žuta = Pohrana podataka**.
+- Visina pojedinog segmenta = doprinos tog kriterija; ukupna visina stupca =
+  ukupni prioritet alternative (pa je Honorov stupac najviši, 0,302).
 
-## 3.4. Gradient (datoteka `3_gradient.png`)
+**Interpretacija:** Honorov stupac dominira zahvaljujući **golemom losos-segmentu
+(kamera ≈ 0,16)** i **istaknutom žutom segmentu (pohrana ≈ 0,065)**; ta dva
+segmenta zajedno čine ~⅔ njegove ukupne vrijednosti. Time je vizualno dokazano da
+Honorova pobjeda *gotovo u cijelosti počiva na dva kriterija*. Kod OnePlusa je
+najuočljiviji zeleni segment (performanse), kod oba Samsunga tirkizni (cijena), a
+iPhone ima najniži stupac s ujednačeno malim segmentima — nema niti jednog
+kriterija na kojem se ističe. Components graf tako objašnjava *uzrok* poretka koji
+desni panel base-grafa prikazuje samo kao rezultat.
 
-Gradient analiza za svaki kriterij zasebno ispituje kako njegova težina utječe na
-poredak alternativa. Graf se sastoji od **šest panela** raspoređenih u mreži 2×3;
-pet panela odgovara kriterijima, a šesti (donji desni) sadrži legendu s bojama
+---
+
+## 3.4. GRADIENT — `3_gradient.png`
+
+### Što se mjeri i kako
+Gradient za **svaki kriterij zasebno** ispituje što bi se dogodilo s poretkom
+kad bi se *samo težina tog kriterija* mijenjala kroz cijeli raspon od 0 do 1
+(ostale težine se proporcionalno skaliraju). Graf čini **mreža 2×3** s pet panela
+(po jedan kriterij) i šestim poljem (donji desni) koje sadrži **legendu** boja
 alternativa.
 
-U svakom panelu vodoravna os (x) označava težinu odabranog kriterija (od 0 do 1),
-a okomita os (y) prioritet alternativa. Šest obojenih linija prati alternative, a
-**okomita crtkana crna linija** označava trenutnu (stvarnu) težinu tog kriterija,
-uz oznaku „trenutno=". Sjecišta linija predstavljaju težine pri kojima dolazi do
-promjene poretka.
+U svakom panelu:
+- **Vodoravna os (x)** = težina odabranog kriterija (0 → 1).
+- **Okomita os (y)** = ukupni prioritet alternativa pri toj težini.
+- **Šest obojenih linija** = alternative (iste boje kao drugdje).
+- **Okomita crtkana crna linija** s oznakom „trenutno=" = stvarna, trenutna
+  težina kriterija. Lijevo od nje je „što ako kriterij postane manje važan",
+  desno „što ako postane važniji".
+- **Sjecišta linija** = točke u kojima dvije alternative mijenjaju mjesta.
 
-- **Cijena:** kako težina cijene raste prema 1, plava linija (Honor) strmo pada
-  (s ≈ 0,30 prema ≈ 0,13), dok roza (A35) i ljubičasta (A56) linija rastu jer su
-  to najjeftiniji uređaji. Linije se sijeku tek znatno desno od trenutne težine
-  (oko x ≈ 0,64), što znači da bi cijena morala postati daleko najvažniji
-  kriterij da Honor izgubi prvo mjesto.
-- **Kvaliteta kamere:** plava linija (Honor) strmo raste prema 1, a sve ostale
-  ostaju niske i ravne. Što je kamera važnija, to je Honorova prednost veća —
-  ovdje nema sjecišta, Honor samo jača.
-- **Performanse:** žuta linija (OnePlus) i plava (Honor) rastu, pri čemu se pri
-  vrlo visokim težinama (blizu x = 1) žuta linija približava plavoj i preteže je
-  (OnePlusov prioritet po performansama 0,237 nadmašuje Honorov 0,193). To znači
-  da bi jedino ekstremno naglašavanje performansi moglo dovesti OnePlus iznad
-  Honora.
-- **Fizičke karakteristike:** sve linije teže prema istoj vrijednosti (≈ 0,167)
-  kako težina raste, jer su alternative po ekranu i težini gotovo izjednačene;
-  Honorova plava linija pritom pada s 0,30, ali ostaje najviša pri trenutnoj
-  težini.
-- **Pohrana podataka:** plava linija (Honor) raste prema 0,364, dok ostale
-  ostaju niske — Honorovih 512 GB daje mu sve veću prednost s rastom važnosti
-  pohrane.
+### Dubinska interpretacija po panelu
+- **Cijena:** s porastom težine prema 1, plava linija (Honor) strmo pada s ≈ 0,30
+  na ≈ 0,13, dok roza (A35) i ljubičasta (A56) rastu (najjeftiniji uređaji).
+  Sjecište u kojem Honor gubi prvo mjesto nalazi se tek oko x ≈ 0,64 — daleko
+  desno od trenutne težine (0,156). Tek ako cijena postane ubjedljivo najvažniji
+  kriterij, Honor pada na drugo mjesto.
+- **Kvaliteta kamere:** plava linija strmo raste prema 1, sve ostale ostaju niske
+  i ravne; **nema sjecišta**. Što je kamera važnija, Honorova prednost samo
+  raste — ovo je „najsigurniji" kriterij za njega.
+- **Performanse:** žuta linija (OnePlus) i plava (Honor) rastu zajedno, ali pri
+  vrlo visokim težinama (x → 1) žuta preteže plavu (OnePlusov prioritet po
+  performansama 0,237 > Honorov 0,193). Dakle jedini realan način da OnePlus
+  ugrozi Honora bio bi ekstremno naglašavanje performansi.
+- **Fizičke karakteristike:** sve linije konvergiraju prema istoj vrijednosti
+  (≈ 0,167) kako težina raste, jer su uređaji po ekranu i težini gotovo
+  izjednačeni. Honorova plava pada, ali ostaje najviša pri trenutnoj (vrlo maloj)
+  težini — ovaj kriterij praktički ne utječe na ishod.
+- **Pohrana podataka:** plava linija raste prema 0,364, ostale ostaju niske;
+  Honorovih 512 GB daje mu sve veću prednost s rastom važnosti pohrane.
 
-**Povezanost s ostalim grafovima:** gradient na detaljnoj razini potvrđuje ono
-što Performance graf pokazuje statički — Honor dobiva na kamerama i pohrani, a
-gubi jedino na cijeni i (potencijalno) na ekstremnim performansama.
+**Povezanost s drugim grafovima:** gradient na kontinuirani način potvrđuje
+statičnu sliku iz Performance i Components grafova — Honor dobiva na kameri i
+pohrani, neutralan je na fizičkim karakteristikama, a ranjiv je jedino na cijeni
+(i to tek u ekstremu) te potencijalno na performansama.
 
-## 3.5. Head-to-head (datoteka `4_head_to_head.png`)
+---
 
-Head-to-head graf izravno uspoređuje dvije najbolje alternative — **Honor 90** i
-drugoplasirani **Samsung Galaxy A35** — po svih sedam listnih (pokrivajućih)
-kriterija. Riječ je o divergentnom (dvosmjernom) grafu vodoravnih stupaca.
+## 3.5. HEAD-TO-HEAD — `4_head_to_head.png`
 
-Na okomitoj osi nalazi se sedam kriterija, poredanih po globalnoj težini od
-najveće (gore) prema najmanjoj (dolje), uz ispisanu težinu: Kvaliteta kamere
-(gw=0,357), Pohrana podataka (0,179), Cijena (0,156), RAM (0,151), Baterija
-(0,075), Ekran (0,061) i Težina (0,020). Središnja okomita crta označava
-nulu/izjednačenost. Vodoravna os ispod nosi oznaku: lijevo „bolji Samsung Galaxy
-A35", desno „bolji Honor 90".
+### Što se mjeri i kako
+Izravna usporedba dvije najbolje alternative — **Honor 90** i drugoplasiranog
+**Samsung Galaxy A35** — po **svih sedam listnih (pokrivajućih) kriterija**. Za
+svaki kriterij računa se *težinski doprinos razlike*: globalna težina lista ×
+(lokalni prioritet Honora − lokalni prioritet A35). Tako se vidi ne samo *tko je
+bolji* na svakom kriteriju, nego i *koliko to vrijedi* u konačnoj odluci.
 
-**Zeleni stupci** usmjereni udesno znače da je Honor bolji na tom kriteriju, a
-**crveni stupci** usmjereni ulijevo znače da je A35 bolji. Duljina stupca jednaka
-je težinskom doprinosu razlike:
+### Elementi grafa
+- **Okomita os** = sedam kriterija, **poredanih po globalnoj težini** od najveće
+  (gore) prema najmanjoj (dolje), uz ispisanu težinu u zagradi: Kvaliteta kamere
+  (gw=0,357), Pohrana (0,179), Cijena (0,156), RAM (0,151), Baterija (0,075),
+  Ekran (0,061), Težina (0,020).
+- **Središnja okomita crna crta** = nula (izjednačenost).
+- **Vodoravna os** = doprinos razlike; oznaka ispod: lijevo „bolji Samsung Galaxy
+  A35", desno „bolji Honor 90".
+- **Zeleni stupci (seagreen) udesno** = Honor bolji; **crveni stupci (indianred)
+  ulijevo** = A35 bolji. Duljina = veličina težinskog doprinosa, ispisana
+  brojčano uz svaki stupac.
 
-- **Kvaliteta kamere:** velik zeleni stupac udesno, +0,120 — Honorova najveća
-  prednost (200 MP naspram 50 MP).
-- **Pohrana podataka:** zeleni stupac +0,032 u korist Honora (512 GB naspram
-  256 GB).
-- **Cijena:** jedini crveni stupac, −0,017 u korist A35 (jeftiniji je: 314 €
-  naspram 572 €).
-- **RAM:** mali zeleni stupac +0,010 (12 GB naspram 8 GB).
-- **Baterija, Ekran, Težina:** stupci su praktički nula (+0,000) — dva su uređaja
-  na tim kriterijima gotovo izjednačena (oba 5000 mAh, sličan ekran).
+### Dubinska interpretacija
+- **Kvaliteta kamere: +0,120** (velik zeleni stupac) — Honorova daleko najveća
+  prednost, posljedica 200 MP naspram 50 MP, pomnožena najvećom težinom.
+- **Pohrana: +0,032** (zeleno) — 512 GB naspram 256 GB.
+- **Cijena: −0,017** (jedini crveni stupac) — A35 je jeftiniji (314 € naspram
+  572 €), ali je doprinos malen zbog niske težine i jer recipročna normalizacija
+  ublažava razliku.
+- **RAM: +0,010** (malo zeleno) — 12 GB naspram 8 GB.
+- **Baterija, Ekran, Težina: ≈ +0,000** — oba uređaja praktički izjednačena (oba
+  5000 mAh, sličan ekran), pa ti kriteriji ne razlučuju.
+- **Neto razlika: +0,146** u korist Honora. Graf jasno pokazuje da Honorova
+  ukupna prednost gotovo isključivo dolazi iz kamere (uz manji doprinos pohrane i
+  RAM-a), a jedina A35-ova „protuteža" — niža cijena — premala je da bi promijenila
+  ishod. Time je head-to-head usporedba i kvantitativni dokaz zašto je razlika
+  prvog i drugog mjesta tako velika.
 
-Neto razlika iznosi **+0,146** u korist Honora. Graf jasno pokazuje da Honorova
-ukupna prednost gotovo u cijelosti dolazi iz kamere, uz manji doprinos pohrane i
-RAM-a, dok mu jedinu „protutežu" daje viša cijena — koja je, međutim, premala da
-bi promijenila ishod.
+---
 
-## 3.6. 2D (datoteka `5_two_d.png`)
+## 3.6. 2D — `5_two_d.png`
 
-2D graf prikazuje uspješnost alternativa raspoređujući ih u jedan od četiri
-kvadranta s obzirom na dva odabrana kriterija — ovdje **Kvaliteta kamere**
-(vodoravna os) i **Performanse** (okomita os).
+### Što se mjeri i kako
+2D graf smješta alternative u koordinatni sustav definiran **dvama odabranim
+kriterijima** kako bi se odjednom vidjela uspješnost na obje dimenzije:
+- **Vodoravna os (x)** = lokalni prioritet po **Kvaliteti kamere** (raspon
+  0,10–0,50).
+- **Okomita os (y)** = lokalni prioritet po **Performansama** (raspon
+  0,13–0,26).
 
-Svaka je alternativa prikazana kao **obojena točka (kružić) s crnim obrubom** i
-pripadajućom oznakom (nazivom). Dvije sive crtkane crte (okomita na x ≈ 0,167 i
-vodoravna na y ≈ 0,167) postavljene su na prosječne vrijednosti i dijele
-prostor na četiri kvadranta. **Gornji desni kvadrant osjenčan je svijetlozeleno i
-označen riječju „NAJBOLJI"** — u njega pada alternativa koja je istovremeno
-iznadprosječna i po kameri i po performansama.
+Ta su dva kriterija odabrana jer su, zajedno, najvažnija (35,7 % + 22,6 % =
+58,3 % ukupne odluke).
 
-- **Honor 90 (plava točka)** smješten je krajnje desno (x = 0,446) i iznad
-  prosjeka po performansama (y = 0,193) — jedini se nalazi u zelenom „najboljem"
-  kvadrantu.
-- **OnePlus 11 (žuta točka)** nalazi se visoko gore (y = 0,237, najviše po
-  performansama) ali skroz lijevo (x = 0,112) — gornji lijevi kvadrant: odličan u
-  performansama, slab u kameri.
-- **Donji lijevi kvadrant** sadrži zbijenu skupinu: Samsung Galaxy A56
-  (ljubičasta) i Samsung Galaxy A35 (roza) gotovo se preklapaju jer imaju jednaku
-  kameru (50 MP) i vrlo slične performanse, a uz njih su Google Pixel 8
-  (tirkizna) i iPhone 16 (zelena, najniže). Sve te alternative su ispodprosječne
-  na oba kriterija.
+### Elementi grafa
+- **Šest obojenih točaka (kružića) s crnim obrubom** = alternative; svaka je
+  označena nazivom.
+- **Dvije sive crtkane crte** (okomita na x ≈ 0,167, vodoravna na y ≈ 0,167)
+  postavljene su na *prosječne* vrijednosti i dijele ravninu na **četiri
+  kvadranta**.
+- **Gornji desni kvadrant osjenčan je svijetlozeleno i nosi natpis „NAJBOLJI"** —
+  u njega pada alternativa iznadprosječna *na oba* kriterija.
 
-**Povezanost s ostalim grafovima:** položaj Honora krajnje desno izravno
-odgovara njegovu vrhu na Performance grafu i velikom zelenom stupcu kamere na
-Head-to-head grafu. Činjenica da je jedini u zelenom kvadrantu vizualno sažima
-cijelu analizu — Honor 90 nadmoćan je upravo na kombinaciji dvaju najvažnijih
-kriterija (kamera i performanse zajedno nose 58,3 % odluke).
+### Dubinska interpretacija po položaju
+- **Honor 90 (plava točka)** je krajnje desno (x = 0,446) i iznad prosjeka po
+  performansama (y = 0,193) → **jedini u zelenom „najboljem" kvadrantu**. Njegova
+  vodoravna udaljenost od svih ostalih vizualno ponavlja „dominaciju omjerom" iz
+  poglavlja 3.0.
+- **OnePlus 11 (žuta točka)** je najviše gore (y = 0,237, najbolje performanse)
+  ali skroz lijevo (x = 0,112) → gornji lijevi kvadrant: vrhunski u
+  performansama, slab u kameri. To je vizualni „profil specijalista".
+- **Donji lijevi kvadrant (ispodprosječni na oba)** sadrži zbijenu skupinu:
+  Samsung A56 (ljubičasta) i A35 (roza) **gotovo se preklapaju** jer dijele istu
+  kameru (50 MP) i vrlo bliske performanse; uz njih su Pixel 8 (tirkizna) i
+  iPhone 16 (zelena, najniže). Preklapanje dviju Samsungovih točaka izravno
+  objašnjava zašto su u konačnom poretku gotovo izjednačene.
+
+**Povezanost s ostalim grafovima:** Honorov položaj krajnje desno odgovara
+njegovu vrhu na Performance grafu, velikom zelenom stupcu kamere na Head-to-head
+grafu i golemom losos-segmentu na Components grafu. Činjenica da je *jedini* u
+zelenom kvadrantu vizualno sažima cijelu analizu: Honor je nadmoćan upravo na
+kombinaciji dvaju najvažnijih kriterija.
+
+---
 
 ## 3.7. Sažetak interpretacije
 
-Sve provedene analize osjetljivosti dosljedno upućuju na isti zaključak:
+Sve provedene analize neovisno vode istom zaključku:
 
 1. **Honor 90 je stabilan pobjednik.** Prvo mjesto zadržava u oba načina sinteze
-   (Distributive i Ideal), pri pomacima težina od ±10 % (Dynamic), te kroz cijeli
-   raspon težina svih kriterija osim u krajnostima (Gradient).
-2. **Crossover analiza** pokazuje da bi Honor izgubio prvo mjesto u korist
-   Samsunga A35 tek kad bi težina cijene narasla s trenutnih 0,156 na čak 0,643 —
-   nijedan drugi kriterij ne može preokrenuti rezultat. Time je potvrđena
-   iznimna otpornost rješenja.
-3. **Izvor pobjede** jasno je vidljiv na Components, Performance i Head-to-head
-   grafovima: Honorova prednost dolazi gotovo isključivo iz kvalitete kamere
-   (200 MP) i velike pohrane (512 GB) — upravo onih značajki koje su za Ivanu kao
-   grafičku dizajnericu najvažnije.
+   (Distributive i Ideal), pri pomacima težina ±10 % (Dynamic) te kroz gotovo
+   cijeli raspon težina svih kriterija (Gradient).
+2. **Crossover analiza** kvantificira tu otpornost: Honor bi izgubio prvo mjesto
+   tek kad bi težina cijene narasla s 0,156 na čak **0,643** — nijedan drugi
+   kriterij ne može preokrenuti rezultat pri realnim vrijednostima.
+3. **Izvor pobjede** dosljedno se vidi na Components, Performance, Head-to-head i
+   2D grafu: Honorova prednost gotovo isključivo dolazi iz **kvalitete kamere
+   (200 MP)** i **velike pohrane (512 GB)** — značajki koje su za Ivanu kao
+   grafičku dizajnericu objektivno najvažnije.
+4. **Jedina nestabilnost** u modelu je borba za *drugo* mjesto između Samsunga
+   A35 i OnePlusa 11 (razlika 0,0003), koja se lako preokreće, ali ne utječe na
+   preporuku.
 
-Stoga se kao optimalan izbor za Ivanu nedvosmisleno preporučuje **Honor 90**.
+Stoga se kao optimalan izbor za Ivanu nedvosmisleno i s visokom pouzdanošću
+preporučuje **Honor 90**.
