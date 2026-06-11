@@ -15,6 +15,7 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")  # bez GUI-a
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 import config
 from ahp import ALTERNATIVES, DATA, HIERARCHY
@@ -54,6 +55,59 @@ def _save(fig, name):
     fig.savefig(path, dpi=130, bbox_inches="tight")
     plt.close(fig)
     print(f"   - {path}")
+
+
+# ---------------------------------------------------------------------------
+# 0. HIJERARHIJSKI MODEL (dijagram)
+# ---------------------------------------------------------------------------
+def hierarchy_diagram(res=None):
+    fig, ax = plt.subplots(figsize=(13, 8))
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
+
+    def box(cx, cy, w, h, text, fc, fs=10, bold=False, tc="black"):
+        ax.add_patch(mpatches.FancyBboxPatch(
+            (cx - w / 2, cy - h / 2), w, h,
+            boxstyle="round,pad=0.004,rounding_size=0.012",
+            linewidth=1.2, edgecolor="#33415c", facecolor=fc, zorder=3))
+        ax.text(cx, cy, text, ha="center", va="center", fontsize=fs,
+                fontweight="bold" if bold else "normal", color=tc, zorder=4)
+        return cx, cy, w, h
+
+    def line(x1, y1, x2, y2):
+        ax.plot([x1, x2], [y1, y2], color="#8d99ae", lw=1.0, zorder=1)
+
+    # Cilj
+    box(0.5, 0.92, 0.52, 0.1,
+        "CILJ\nOdabir optimalnog pametnog telefona za Ivanu",
+        "#1f4e79", 11, True, "white")
+
+    # Glavni kriteriji
+    crit = [("Cijena\n(EUR)", 0.10), ("Kvaliteta\nkamere (MP)", 0.30),
+            ("Performanse", 0.50), ("Fizičke\nkarakteristike", 0.70),
+            ("Pohrana\npodataka (GB)", 0.90)]
+    for name, cx in crit:
+        box(cx, 0.68, 0.165, 0.1, name, "#9ec5e8", 9.5, True)
+        line(0.5, 0.87, cx, 0.73)
+
+    # Podkriteriji
+    subs = [("RAM\n(GB)", 0.44, 0.50), ("Baterija\n(mAh)", 0.54, 0.50),
+            ("Ekran\n(inč)", 0.66, 0.70), ("Težina\n(g)", 0.76, 0.70)]
+    leaf_bottoms = [(0.10, 0.63), (0.30, 0.63), (0.90, 0.63)]  # listni glavni kriteriji
+    for name, cx, parent in subs:
+        box(cx, 0.46, 0.095, 0.09, name, "#cfe3f5", 9, False)
+        line(parent, 0.63, cx, 0.505)
+        leaf_bottoms.append((cx, 0.415))
+
+    # Alternative
+    box(0.5, 0.13, 0.9, 0.12,
+        "ALTERNATIVE\nHonor 90  ·  iPhone 16  ·  Samsung Galaxy A56  ·  "
+        "Samsung Galaxy A35  ·  OnePlus 11  ·  Google Pixel 8",
+        "#e9ecef", 9.5, False)
+    for x, y in leaf_bottoms:  # svaki list -> alternative
+        line(x, y, 0.5, 0.19)
+
+    ax.set_title("Hijerarhijski model problema odlučivanja", fontsize=13, pad=4)
+    _save(fig, "0_hijerarhija.png")
 
 
 # ---------------------------------------------------------------------------
@@ -357,6 +411,7 @@ def two_d(res):
 def run_all(res):
     _ensure_outdir()
     print("\n[6] ANALIZA OSJETLJIVOSTI - generiranje grafova:")
+    hierarchy_diagram(res)
     performance(res)
     dynamic(res)
     gradient(res)

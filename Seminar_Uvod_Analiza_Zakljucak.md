@@ -33,6 +33,17 @@ poredak alternativa s obzirom na glavni cilj. Glavna prednost metode jest što
 subjektivne prosudbe o važnosti** kriterija u jedinstven, transparentan i provjerljiv
 model.
 
+Za provedbu AHP metode uobičajeno se koristi specijalizirani programski alat
+Expert Choice. Tijekom izrade ovog rada Expert Choice je, međutim, stvarao
+poteškoće u radu (pri unosu modela i provođenju analiza), pa je donesena odluka da
+se cijela metoda implementira samostalno, u programskom jeziku Python. Budući da
+su problem odlučivanja i sama AHP metoda dovoljno dobro shvaćeni, vlastita je
+implementacija ocijenjena kao pouzdaniji put do rezultata: ona omogućuje potpunu
+kontrolu nad izračunom lokalnih i globalnih prioriteta, provjerom konzistentnosti
+te nad svim analizama osjetljivosti, uz potpunu transparentnost i ponovljivost.
+Svi izračuni, težine i grafovi prikazani u ovom radu generirani su tom vlastitom
+implementacijom AHP metode.
+
 ## 1.1. Opis problema i donositelja odluke
 
 Problem se promatra iz perspektive konkretnog korisnika kako bi prosudbe o
@@ -113,22 +124,11 @@ Problem je strukturiran u **četverorazinski hijerarhijski model**:
 - **4. razina — Alternative:** šest pametnih telefona, povezanih sa svakim
   listnim kriterijem.
 
-```
-                          CILJ: Optimalni pametni telefon za Ivanu
-                                          │
-        ┌──────────────┬──────────────────┼───────────────────┬──────────────┐
-        │              │                  │                   │              │
-     Cijena      Kvaliteta kamere     Performanse      Fizičke karakt.    Pohrana
-     (EUR,        (MP, korisni)           │                   │          podataka
-     troškovni)                    ┌──────┴──────┐      ┌─────┴─────┐    (GB, korisni)
-                                   RAM        Baterija  Ekran    Težina
-                                  (GB)         (mAh)    (inč)     (g)
-                                                          
-        └──────────────┴──────────────────┴───────────────────┴──────────────┘
-                                          │
-              Alternative: Honor 90 · iPhone 16 · Samsung Galaxy A56 ·
-                  Samsung Galaxy A35 · OnePlus 11 · Google Pixel 8
-```
+Na **slici 1** prikazan je cjeloviti hijerarhijski model ovog problema odlučivanja.
+
+![](output/0_hijerarhija.png)
+
+Hijerarhijski model (Slika 1) sastoji se od četiri razine povezane linijama koje prikazuju odnos nadređenosti između elemenata. Na vrhu se, u tamnoplavom pravokutniku, nalazi **cilj** — odabir optimalnog pametnog telefona za Ivanu. Iz cilja se granaju **pet glavnih kriterija** (svijetloplavi pravokutnici druge razine): Cijena, Kvaliteta kamere, Performanse, Fizičke karakteristike i Pohrana podataka. Dva od tih kriterija dodatno se razlažu na **podkriterije** (treća, najsvjetlija razina): Performanse na RAM i Bateriju, a Fizičke karakteristike na Ekran i Težinu; preostala tri kriterija (Cijena, Kvaliteta kamere, Pohrana) nemaju podkriterije pa su ujedno i listovi. Na dnu (sivi pravokutnik) nalazi se **šest alternativa** — Honor 90, iPhone 16, Samsung Galaxy A56, Samsung Galaxy A35, OnePlus 11 i Google Pixel 8 — koje su linijama povezane sa svih sedam listnih kriterija, čime je naznačeno da se svaka alternativa ocjenjuje prema svakom listnom kriteriju.
 
 Model ima ukupno **sedam listnih (pokrivajućih) kriterija** na kojima se ocjenjuju
 alternative: Cijena, Kvaliteta kamere, RAM, Baterija, Ekran, Težina i Pohrana

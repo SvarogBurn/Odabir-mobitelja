@@ -105,6 +105,10 @@ postotnih bodova ispred zadnjeg. Drugo i treće mjesto (A35: 0,1565; OnePlus:
 
 ## 3.2. PERFORMANCE — `1_performance.png`
 
+Na **slici 2** prikazan je *Performance* graf, koji za svaku alternativu
+prikazuje njezinu uspješnost po pojedinom kriteriju i istovremeno tu uspješnost
+povezuje s važnošću (težinom) tih kriterija.
+
 ### Što se mjeri i kako
 Graf istovremeno prikazuje **dvije veličine na dvije različite okomite osi**:
 - **Lijeva os („Lokalni prioritet alternative", raspon 0,0–0,5)** mjeri koliko
@@ -160,9 +164,12 @@ izračunat je kao težinski prosjek podkriterija — npr. Performanse = 0,667·R
 ## 3.3. DYNAMIC — `2_dynamic_base.png`, `2_dynamic_scenarios.png`, `2_dynamic_components.png`
 
 Dynamic analiza ispituje koliko je rješenje osjetljivo na promjene težina
-kriterija i od čega se sastoji. Prikazana je s tri grafa.
+kriterija i od čega se sastoji. Prikazana je kroz tri slike (Slike 3, 4 i 5).
 
 ### 3.3.1. Trenutno stanje — `2_dynamic_base.png`
+
+Na **slici 3** prikazano je trenutno („baseline") stanje modela — težine
+kriterija i iz njih proizašli ukupni prioriteti alternativa.
 
 **Što se mjeri:** lijevi panel mjeri težine kriterija, desni ukupne prioritete
 alternativa; oba u istoj bezdimenzijskoj skali udjela (0–1).
@@ -187,6 +194,9 @@ upravo predmet sljedećeg grafa.
 
 ### 3.3.2. Scenariji ±10 % — `2_dynamic_scenarios.png`
 
+Na **slici 4** prikazan je utjecaj namjerne promjene težine pojedinog kriterija
+za ±10 % na ukupne prioritete alternativa.
+
 **Što se mjeri:** kako se ukupni prioriteti (okomita os „Ukupni prioritet")
 mijenjaju kad jednom kriteriju namjerno povećamo ili smanjimo težinu za 10 %, uz
 proporcionalnu preraspodjelu ostalih težina (da zbroj ostane 1,0).
@@ -208,6 +218,9 @@ ni pobjednika ni opću strukturu, nego samo „prebacuje" dva ionako izjednačen
 kandidata za drugo mjesto.
 
 ### 3.3.3. Components — `2_dynamic_components.png`
+
+Na **slici 5** prikazana je *Components* razdioba — od kojih se „sastojaka"
+(doprinosa pojedinih kriterija) sastoji ukupni prioritet svake alternative.
 
 **Što se mjeri:** od kojih se „sastojaka" sastoji ukupni prioritet svake
 alternative, tj. koliko svaki *kriterij* doprinosi konačnom rezultatu te
@@ -235,6 +248,9 @@ desni panel base-grafa prikazuje samo kao rezultat.
 ---
 
 ## 3.4. GRADIENT — `3_gradient.png`
+
+Na **slici 6** prikazana je *Gradient* analiza, koja za svaki kriterij zasebno
+pokazuje kako njegova težina utječe na prioritete (i poredak) alternativa.
 
 ### Što se mjeri i kako
 Gradient za **svaki kriterij zasebno** ispituje što bi se dogodilo s poretkom
@@ -281,6 +297,9 @@ pohrani, neutralan je na fizičkim karakteristikama, a ranjiv je jedino na cijen
 
 ## 3.5. HEAD-TO-HEAD — `4_head_to_head.png`
 
+Na **slici 7** prikazana je *Head-to-head* analiza — izravna usporedba dviju
+najboljih alternativa (Honor 90 i Samsung Galaxy A35) po svim listnim kriterijima.
+
 ### Što se mjeri i kako
 Izravna usporedba dvije najbolje alternative — **Honor 90** i drugoplasiranog
 **Samsung Galaxy A35** — po **svih sedam listnih (pokrivajućih) kriterija**. Za
@@ -319,6 +338,9 @@ bolji* na svakom kriteriju, nego i *koliko to vrijedi* u konačnoj odluci.
 ---
 
 ## 3.6. 2D — `5_two_d.png`
+
+Na **slici 8** prikazan je *2D* graf koji smješta alternative u koordinatni
+sustav definiran dvama najvažnijim kriterijima (kvaliteta kamere i performanse).
 
 ### Što se mjeri i kako
 2D graf smješta alternative u koordinatni sustav definiran **dvama odabranim
@@ -372,8 +394,9 @@ Sve provedene analize neovisno vode istom zaključku:
 2. **Crossover analiza** kvantificira tu otpornost: Honor bi izgubio prvo mjesto
    tek kad bi težina cijene narasla s 0,156 na čak **0,643** — nijedan drugi
    kriterij ne može preokrenuti rezultat pri realnim vrijednostima.
-3. **Izvor pobjede** dosljedno se vidi na Components, Performance, Head-to-head i
-   2D grafu: Honorova prednost gotovo isključivo dolazi iz **kvalitete kamere
+3. **Izvor pobjede** dosljedno se vidi na Components (Slika 5), Performance
+   (Slika 2), Head-to-head (Slika 7) i 2D grafu (Slika 8): Honorova prednost
+   gotovo isključivo dolazi iz **kvalitete kamere
    (200 MP)** i **velike pohrane (512 GB)** — značajki koje su za Ivanu kao
    grafičku dizajnericu objektivno najvažnije.
 4. **Jedina nestabilnost** u modelu je borba za *drugo* mjesto između Samsunga

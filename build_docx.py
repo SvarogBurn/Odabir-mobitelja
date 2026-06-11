@@ -20,6 +20,26 @@ IMGDIR = "output"
 INLINE = re.compile(r'(\*\*.+?\*\*|\*[^*\n]+?\*|`[^`]+`)')
 PNG = re.compile(r'`([^`]+\.png)`')
 
+# Opisni naslovi slika (numeriranje se dodjeljuje automatski redom umetanja)
+FIG_CAPTIONS = {
+    '0_hijerarhija.png': 'Hijerarhijski model problema odlučivanja '
+        '(cilj → kriteriji → podkriteriji → alternative)',
+    '1_performance.png': 'Performance — lokalni prioriteti alternativa po '
+        'kriterijima u odnosu na težine kriterija',
+    '2_dynamic_base.png': 'Dynamic — trenutne težine kriterija (lijevo) i '
+        'ukupni prioriteti alternativa (desno)',
+    '2_dynamic_scenarios.png': 'Dynamic — utjecaj promjene težine kriterija za '
+        '±10 % na ukupne prioritete alternativa',
+    '2_dynamic_components.png': 'Dynamic / Components — doprinos pojedinih '
+        'kriterija ukupnom prioritetu svake alternative',
+    '3_gradient.png': 'Gradient — promjena prioriteta alternativa s promjenom '
+        'težine pojedinog kriterija',
+    '4_head_to_head.png': 'Head-to-head — usporedba dviju najboljih alternativa '
+        'po svim listnim kriterijima',
+    '5_two_d.png': '2D — položaj alternativa s obzirom na dva najvažnija '
+        'kriterija (kvaliteta kamere i performanse)',
+}
+
 
 def add_runs(par, text, bold=False):
     """Dodaje tekst u paragraf uz **bold** i `monospace` formatiranje."""
@@ -43,6 +63,7 @@ class Builder:
     def __init__(self, doc):
         self.doc = doc
         self.title_used = False
+        self.fig_no = 0        # brojac slika
         self.buf = []          # tekuci blok (paragraf/stavka liste)
         self.buf_kind = None   # 'p' | 'bullet' | 'number'
 
@@ -98,10 +119,15 @@ class Builder:
         p = self.doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.add_run().add_picture(path, width=Inches(6.2))
-        cap = self.doc.add_paragraph()
+        self.fig_no += 1
+        title = FIG_CAPTIONS.get(fname, fname)
+        try:
+            cap = self.doc.add_paragraph(style='Caption')
+        except KeyError:
+            cap = self.doc.add_paragraph()
         cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        r = cap.add_run(f"Slika: {fname}")
-        r.italic = True; r.font.size = Pt(8); r.font.color.rgb = RGBColor(0x60, 0x60, 0x60)
+        r = cap.add_run(f"Slika {self.fig_no}. {title}")
+        r.italic = True; r.font.size = Pt(9); r.font.color.rgb = RGBColor(0x40, 0x40, 0x40)
 
     def code(self, lines):
         self.flush()
@@ -136,19 +162,24 @@ def title_page(doc):
         r.bold, r.italic, r.font.size = bold, italic, Pt(size)
         return p
 
-    center("Sveučilište u Rijeci", 14, bold=True, after=0)
-    center("Fakultet informatike i digitalnih tehnologija", 12, after=2)
-    center("Digitalna transformacija", 11, italic=True, after=0)
-    for _ in range(6):
+    center("Sveučilište u Rijeci", 13, bold=True, after=0)
+    center("Fakultet informatike i digitalnih tehnologija", 12, after=0)
+    center("Sveučilišni diplomski studij Informatika", 11, italic=True)
+    for _ in range(4):
+        doc.add_paragraph()
+    center("Reo Turčinović", 14, bold=True)
+    for _ in range(3):
         doc.add_paragraph()
     center("ODABIR OPTIMALNOG PAMETNOG TELEFONA", 22, bold=True, after=0)
     center("PRIMJENOM AHP METODE", 22, bold=True, after=8)
-    center("Seminarski rad iz višekriterijskog odlučivanja", 12, italic=True)
-    for _ in range(8):
-        doc.add_paragraph()
-    center("Studenti: _______________________________", 12, after=4)
-    center("Mentor: _______________________________", 12)
+    center("Seminarski rad", 12, italic=True, after=0)
+    center("Kolegij: Upravljanje digitalnom transformacijom", 11)
     for _ in range(6):
+        doc.add_paragraph()
+    center("Mentori:", 11, after=0)
+    center("prof. dr. sc. Patrizia Poščić", 11, after=0)
+    center("doc. dr. sc. Kristian Stančin", 11)
+    for _ in range(4):
         doc.add_paragraph()
     center("Rijeka, lipanj 2026.", 11)
     doc.add_page_break()
